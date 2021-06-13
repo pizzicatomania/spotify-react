@@ -1,8 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
 import AlbumsList from './AlbumsList';
+import ArtistsList from './ArtistsList';
+import PlayList from './PlayList';
+import { Button } from 'react-bootstrap';
+
 const SearchResult = (props) => {
-    const {result, setCategory, selectedCategory } = props;
+    const { loadMore, result, setCategory, selectedCategory } = props;
     const { albums, artists, playlist } = result;
     return (
         <React.Fragment>
@@ -39,9 +43,23 @@ const SearchResult = (props) => {
                     </button>
                 )}
             </div>
-            <div className={`${selectedCategory === 'album' ? '' : 'hide'}`}>
+            <div className={`${selectedCategory === 'albums' ? '' : 'hide'}`}>
                 { albums && <AlbumsList albums={albums} />}
             </div>
+            <div className={`${selectedCategory === 'artists' ? '' : 'hide'}`}>
+                { albums && <ArtistsList artists={artists} />}
+            </div>
+            <div className={`${selectedCategory === 'playlist' ? '' : 'hide'}`}>
+                { albums && <PlayList playlist={playlist} />}
+            </div>
+            {!_.isEmpty(result[selectedCategory]) &&
+             !_.isEmpty(result[selectedCategory].next) && (
+                 <div className="load-mode" onClick={() => loadMore(selectedCategory)}>
+                     <Button variant="info" type="button">
+                         Load more
+                     </Button>
+                 </div>
+             )}
         </React.Fragment>
     );
 };

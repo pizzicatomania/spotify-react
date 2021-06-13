@@ -1,7 +1,17 @@
-const albumsReducer = (state = {}, action) => {
+import { SET_ALBUMS, ADD_ALBUMS } from '../utils/constants';
+const albumReducer = (state = {}, action) => {
+    const { albums } = action;
     switch (action.type) {
-      default:
-        return state;
+        case SET_ALBUMS:
+            return albums;
+        case ADD_ALBUMS:
+            return {
+                ...state,
+                next: albums.next,
+                items: [...state.items, ...albums.items]
+            };
+        default:
+            return state;
     }
-  };
-  export default albumsReducer;
+};
+export default albumReducer;
